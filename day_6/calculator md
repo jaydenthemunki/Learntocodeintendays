@@ -1,0 +1,438 @@
+# Calculator Code Explanation - Line by Line
+
+This guide explains every single line of the calculator program so a beginner can understand exactly what's happening!
+
+---
+
+## Lines 1-2: Comments
+
+```python
+# Day 6 - Calculator Program with Functions and Logging
+# This program performs basic math operations and logs everything to a file
+```
+
+**What it does:** These are comments (lines that start with `#`). Python ignores them - they're just notes for humans reading the code.
+
+**Why we use them:** To explain what the program does so other people (or future you!) can understand it.
+
+---
+
+## Lines 4-5: Importing Modules
+
+```python
+# Import the logging module - it helps us track what our program does
+import logging
+```
+
+**What it does:** The `import` keyword brings in extra tools (called modules) that aren't built into basic Python.
+
+**Why we need it:** The `logging` module lets us save messages to a file and track what our program is doing. Without importing it, we can't use logging features.
+
+**Think of it like:** Getting a special calculator app on your phone - Python doesn't come with logging automatically, so we have to add it.
+
+---
+
+## Lines 7-15: Setting Up Logging
+
+```python
+# Set up logging - this creates TWO outputs:
+# 1. A file called 'calculator.log' that saves everything
+# 2. Console output so we can still see messages on screen
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('calculator.log'),  # Save to file
+        logging.StreamHandler()  # Also show on screen
+    ]
+)
+```
+
+**What it does:** Configures how logging will work in our program.
+
+**Breaking it down:**
+- `logging.basicConfig()` = the setup function for logging
+- `level=logging.DEBUG` = log EVERYTHING, even tiny details (DEBUG is the most detailed level)
+- `format='%(asctime)s - %(levelname)s - %(message)s'` = how each log message should look:
+  - `%(asctime)s` = the date and time
+  - `%(levelname)s` = the severity (DEBUG, INFO, WARNING, ERROR)
+  - `%(message)s` = the actual message
+- `handlers=[...]` = where to send the log messages:
+  - `logging.FileHandler('calculator.log')` = save to a file called calculator.log
+  - `logging.StreamHandler()` = also display on the screen (console)
+
+**Why we need it:** So we can see what's happening NOW (on screen) and also have a permanent record (in the file) to look back at later.
+
+---
+
+## Lines 17-18: Section Comment
+
+```python
+# FUNCTIONS - These are reusable pieces of code!
+# Each function does ONE specific job
+```
+
+**What it does:** Just a comment explaining the next section.
+
+**Why it's important:** Helps organize the code into sections so it's easier to read.
+
+---
+
+## Lines 20-24: The Add Function
+
+```python
+def add(num1, num2):
+    """This function adds two numbers together"""
+    result = num1 + num2
+    logging.info(f"Calculation: {num1} + {num2} = {result}")
+    return result
+```
+
+**What it does:** Creates a function called `add` that adds two numbers.
+
+**Breaking it down:**
+- `def add(num1, num2):` = define a function named "add" that takes 2 inputs (called parameters)
+  - `def` = keyword that means "define a function"
+  - `add` = the name we're giving this function
+  - `num1, num2` = the two numbers it needs (placeholders for whatever numbers we pass in)
+  - `:` = starts the function's code block
+- `"""This function adds two numbers together"""` = a docstring (documentation string) that explains what the function does
+- `result = num1 + num2` = do the addition and store it in a variable called `result`
+- `logging.info(f"Calculation: {num1} + {num2} = {result}")` = log what we just calculated
+  - `logging.info()` = log at INFO level (normal information)
+  - `f"..."` = an f-string (formatted string) that lets us insert variables into text using `{}`
+- `return result` = send the answer back to wherever the function was called
+
+**Why we use functions:** Instead of writing the addition code every time we need it, we write it once in a function and reuse it!
+
+---
+
+## Lines 26-30: The Subtract Function
+
+```python
+def subtract(num1, num2):
+    """This function subtracts the second number from the first"""
+    result = num1 - num2
+    logging.info(f"Calculation: {num1} - {num2} = {result}")
+    return result
+```
+
+**What it does:** Same structure as `add()`, but does subtraction (`-`) instead.
+
+**Breaking it down:**
+- Takes two numbers
+- Subtracts `num2` from `num1`
+- Logs the calculation
+- Returns the result
+
+**Note:** The order matters! `subtract(10, 3)` gives 7, but `subtract(3, 10)` gives -7.
+
+---
+
+## Lines 32-36: The Multiply Function
+
+```python
+def multiply(num1, num2):
+    """This function multiplies two numbers"""
+    result = num1 * num2
+    logging.info(f"Calculation: {num1} × {num2} = {result}")
+    return result
+```
+
+**What it does:** Multiplies two numbers using the `*` operator.
+
+**Breaking it down:**
+- Same structure as before
+- Uses `*` for multiplication
+- The `×` symbol in the log message is just for display (makes it look nice), the actual math uses `*`
+
+---
+
+## Lines 38-46: The Divide Function
+
+```python
+def divide(num1, num2):
+    """This function divides the first number by the second"""
+    if num2 == 0:
+        logging.error(f"Division by zero attempted: {num1} ÷ 0")
+        return "ERROR: Can't divide by zero!"
+    else:
+        result = num1 / num2
+        logging.info(f"Calculation: {num1} ÷ {num2} = {result}")
+        return result
+```
+
+**What it does:** Divides two numbers, but first checks if we're trying to divide by zero (which is impossible in math).
+
+**Breaking it down:**
+- `if num2 == 0:` = check if the second number is zero
+  - `==` is the "equals" comparison (different from `=` which assigns values)
+- `logging.error(...)` = log an ERROR (more serious than INFO or WARNING)
+- `return "ERROR: Can't divide by zero!"` = return an error message instead of a number
+- `else:` = if num2 is NOT zero, do this instead:
+- `result = num1 / num2` = do the division using `/`
+- Log and return the result
+
+**Why we need the check:** Dividing by zero would crash the program, so we check first and handle it gracefully.
+
+---
+
+## Lines 48-51: Main Program Start
+
+```python
+# MAIN PROGRAM STARTS HERE
+logging.info("="*40)
+logging.info("🧮 Calculator Program Started 🧮")
+logging.info("="*40)
+```
+
+**What it does:** Logs a welcome banner.
+
+**Breaking it down:**
+- `"="*40` = repeat the `=` character 40 times (creates a line)
+- Three logging statements create a nice header
+- This appears both on screen and in the log file
+
+---
+
+## Lines 53-55: Get First Number
+
+```python
+# Step 1: Get the first number
+first_number = float(input("\nWhat's your first number? "))
+logging.debug(f"User entered first number: {first_number}")
+```
+
+**What it does:** Asks the user for the first number and logs it.
+
+**Breaking it down:**
+- `input("\nWhat's your first number? ")` = display a message and wait for the user to type something
+  - `\n` = newline character (starts on a new line)
+  - Whatever the user types becomes a string (text)
+- `float(...)` = convert the user's text into a decimal number
+  - `float` means "floating-point number" (a number with decimals)
+  - Example: "5.5" (text) becomes 5.5 (number)
+- `first_number =` = store it in a variable
+- `logging.debug(...)` = log at DEBUG level (detailed tracking)
+
+**Why float?:** So users can enter decimals like 3.5, not just whole numbers.
+
+---
+
+## Lines 57-59: Get Operation
+
+```python
+# Step 2: Ask which operation they want
+logging.info("Operations available: + - * /")
+operation = input("\nPick an operation (+, -, *, /): ")
+logging.debug(f"User selected operation: {operation}")
+```
+
+**What it does:** Tells the user what operations are available and asks them to pick one.
+
+**Breaking it down:**
+- First logs what operations exist
+- `input(...)` asks the user to type an operation
+- Stores their choice in the `operation` variable (as text/string)
+- Logs what they chose
+
+**Note:** We don't convert to float here because operations are symbols, not numbers!
+
+---
+
+## Lines 61-63: Get Second Number
+
+```python
+# Step 3: Get the second number
+second_number = float(input("\nWhat's your second number? "))
+logging.debug(f"User entered second number: {second_number}")
+```
+
+**What it does:** Same as getting the first number, but for the second number.
+
+**Breaking it down:**
+- Ask for input
+- Convert to float
+- Store in `second_number`
+- Log it
+
+---
+
+## Lines 65-68: Addition Branch
+
+```python
+# Step 4: Call the right function based on the operation
+if operation == "+":
+    answer = add(first_number, second_number)
+    logging.info(f"✓ Result: {answer}")
+```
+
+**What it does:** If the user chose `+`, call the `add()` function.
+
+**Breaking it down:**
+- `if operation == "+":` = check if the operation variable equals "+"
+- `answer = add(first_number, second_number)` = call our add function with both numbers
+  - The function returns the result, which we store in `answer`
+- Log the result with a checkmark emoji
+
+**How it works:** When we call `add(first_number, second_number)`, Python jumps to the add function, runs its code, and returns the result back to this line.
+
+---
+
+## Lines 70-73: Subtraction Branch
+
+```python
+elif operation == "-":
+    answer = subtract(first_number, second_number)
+    logging.info(f"✓ Result: {answer}")
+```
+
+**What it does:** If the user chose `-`, call the `subtract()` function.
+
+**Breaking it down:**
+- `elif` = "else if" (checks this condition only if the previous `if` was false)
+- Same structure as the addition branch
+- Calls `subtract()` instead of `add()`
+
+---
+
+## Lines 75-78: Multiplication Branch
+
+```python
+elif operation == "*":
+    answer = multiply(first_number, second_number)
+    logging.info(f"✓ Result: {answer}")
+```
+
+**What it does:** If the user chose `*`, call the `multiply()` function.
+
+**Breaking it down:**
+- Another `elif` branch
+- Calls the `multiply()` function
+
+---
+
+## Lines 80-86: Division Branch
+
+```python
+elif operation == "/":
+    answer = divide(first_number, second_number)
+    if "ERROR" not in str(answer):
+        logging.info(f"✓ Result: {answer}")
+    else:
+        logging.error(f"❌ {answer}")
+```
+
+**What it does:** If the user chose `/`, call the `divide()` function, but handle potential errors.
+
+**Breaking it down:**
+- `answer = divide(first_number, second_number)` = call the divide function
+- `if "ERROR" not in str(answer):` = check if the word "ERROR" is NOT in the answer
+  - `str(answer)` = convert answer to a string so we can search it
+  - `not in` = check if something is absent
+- If there's no error, log the result normally
+- `else:` = if there IS an error (divide by zero)
+- Log it as an ERROR with a ❌ emoji
+
+**Why this check?:** Our divide function returns an error message (text) instead of a number when dividing by zero.
+
+---
+
+## Lines 88-89: Invalid Operation
+
+```python
+else:
+    logging.warning(f"Invalid operation entered: '{operation}' - Please use +, -, *, or /")
+```
+
+**What it does:** If the user typed something OTHER than +, -, *, or /, show a warning.
+
+**Breaking it down:**
+- `else:` = if none of the above conditions were true
+- `logging.warning(...)` = log at WARNING level (something unexpected)
+- Tells the user what they entered and what they should use
+
+**Why we need it:** Handles user mistakes gracefully instead of crashing.
+
+---
+
+## Lines 91-94: Program End
+
+```python
+# Say goodbye
+logging.info("\nCalculator program ended successfully")
+logging.info("Check calculator.log for full history!")
+logging.info("="*40)
+```
+
+**What it does:** Logs goodbye messages.
+
+**Breaking it down:**
+- Three log messages to signal the program is done
+- Reminds the user they can check the log file
+- Creates a closing line with `=`
+
+---
+
+## Lines 96-103: Learning Notes
+
+```python
+# LEARNING NOTES:
+# - We replaced ALL print() with logging statements
+# - logging.DEBUG = detailed info for debugging
+# - logging.INFO = general information messages
+# - logging.WARNING = something unexpected happened
+# - logging.ERROR = an error occurred
+# - Everything appears both on screen AND in calculator.log file!
+```
+
+**What it does:** Just comments explaining what we learned.
+
+**Breaking it down:**
+- Summarizes the different logging levels
+- Reminds us that logging outputs to two places
+- Helps reinforce the concepts
+
+---
+
+## Summary: How the Whole Program Flows
+
+1. **Import logging** → Get the tools we need
+2. **Configure logging** → Set up file and screen output
+3. **Define 4 functions** → Create reusable code for each operation
+4. **Start program** → Log welcome message
+5. **Get first number** → Ask user, convert to float, log it
+6. **Get operation** → Ask user which math operation
+7. **Get second number** → Ask user, convert to float, log it
+8. **Do the math** → Use if/elif/else to call the right function
+9. **Show result** → Log the answer
+10. **End program** → Log goodbye message
+
+---
+
+## Key Concepts You Learned
+
+- **Comments** (`#`) = notes for humans
+- **Import** = bringing in extra tools
+- **Functions** (`def`) = reusable blocks of code
+- **Parameters** = inputs a function needs
+- **Return** = sending a value back from a function
+- **Variables** = containers that store data
+- **Data types**: strings (text), floats (decimal numbers)
+- **Input/output**: `input()` gets user data, logging displays messages
+- **If/elif/else** = making decisions in code
+- **Comparison** (`==`, `!=`) = checking if things are equal
+- **Logging levels**: DEBUG, INFO, WARNING, ERROR
+- **F-strings** = inserting variables into text with `{}`
+
+---
+
+## Try These Experiments!
+
+1. **Add a new operation**: Create a `power()` function for exponents (`**`)
+2. **Change log levels**: Change `DEBUG` to `INFO` - what disappears?
+3. **Read the log file**: After running the calculator, open `calculator.log` with a text editor
+4. **Break it on purpose**: Enter letters instead of numbers - what happens?
+5. **Add more emojis**: Make the log messages more fun!
+
+You now understand every single line of this calculator program! 🎉
